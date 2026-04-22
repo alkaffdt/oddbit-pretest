@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final dioProvider = Provider<Dio>((ref) {
@@ -15,7 +16,7 @@ class DioClient {
   DioClient(this._dio) {
     _initHeaders();
     _dio
-      ..options.baseUrl = 'https://oddbit-pretest.up.railway.app/api/'
+      ..options.baseUrl = dotenv.env['BASE_URL']!
       ..options.connectTimeout = const Duration(seconds: 15)
       ..options.receiveTimeout = const Duration(seconds: 15)
       ..options.responseType = ResponseType.json
