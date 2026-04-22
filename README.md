@@ -85,7 +85,7 @@ The backend is a Node.js REST API built with Express.js and backed by PostgreSQL
 
 ## Suggestions / Potential Improvements
 
-### Auto-Build & Auto-Deploy to Web using CI/CD
-### Pagination & Caching
-### Offline Mode
-### Animation Implementation
+* Auto-Build & Auto-Deploy to Web using CI/CD
+* Pagination & Caching
+* Offline Mode
+* Animation Implementation
