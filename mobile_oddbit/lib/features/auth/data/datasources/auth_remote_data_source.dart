@@ -35,7 +35,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerFailure('Invalid credentials');
       }
     } on DioException catch (e) {
-      throw ServerFailure(e.message ?? 'Server error occurred');
+      throw ServerFailure(e.response?.data['error'] ?? Failure.defaultMessage);
     }
   }
 
@@ -53,7 +53,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerFailure('Invalid credentials');
       }
     } on DioException catch (e) {
-      throw ServerFailure(e.message ?? 'Server error occurred');
+      throw ServerFailure(e.response?.data['error'] ?? Failure.defaultMessage);
     }
   }
 
