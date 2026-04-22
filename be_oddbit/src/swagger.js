@@ -45,14 +45,7 @@ const options = {
                     type: 'object',
                     properties: {
                         message: { type: 'string', example: 'User registered successfully' },
-                        user: {
-                            type: 'object',
-                            properties: {
-                                id: { type: 'integer', example: 1 },
-                                username: { type: 'string', example: 'johndoe' },
-                                created_at: { type: 'string', format: 'date-time' },
-                            },
-                        },
+                        username: { type: 'string', example: 'johndoe' },
                         access_token: { type: 'string' },
                         refresh_token: { type: 'string' },
                     },

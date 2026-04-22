@@ -11,6 +11,7 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
 
 abstract class AuthRemoteDataSource {
   Future<User> login(String username, String password);
+  Future<User> register(String username, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -23,6 +24,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final response = await dioClient.post(
         '/auth/login',
+        data: {'username': username, 'password': password},
+      );
+
+      if (response.statusCode == 200) {
+        return User.fromJson(response.data);
+      } else {
+        throw const ServerFailure('Invalid credentials');
+      }
+    } on DioException catch (e) {
+      throw ServerFailure(e.message ?? 'Server error occurred');
+    }
+  }
+
+  @override
+  Future<User> register(String username, String password) async {
+    try {
+      final response = await dioClient.post(
+        '/auth/register',
         data: {'username': username, 'password': password},
       );
 

@@ -24,11 +24,17 @@ class AuthController extends StateNotifier<LoginPageState> {
   AuthController(this._authRepository, {required this.dioClient})
     : super(LoginPageState());
 
-  Future<void> login(String email, String password) async {
+  Future<void> submitAuth(
+    String email,
+    String password, {
+    bool isRegister = false,
+  }) async {
     try {
       state = state.copyWith(user: AsyncValue.loading());
 
-      final result = await _authRepository.login(email, password);
+      final result = isRegister
+          ? await _authRepository.register(email, password)
+          : await _authRepository.login(email, password);
 
       if (result.accessToken.isNotNullAndNotEmpty) {
         dioClient.setAuthToken(result.accessToken);
