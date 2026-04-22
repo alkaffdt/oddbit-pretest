@@ -1,6 +1,27 @@
 # Oddbit Pretest Project
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/3ca5576a-b905-4520-9073-02a3a3151e7a" width="300"/>
+  <img src="https://github.com/user-attachments/assets/7914ae08-c3bc-4c54-8d24-f28b9553dd17" width="300"/>
+</div>
+
+</br>
+
 This repository contains the source code for the Oddbit Pretest application, which is divided into two primary sub-projects:
+
+## 🚀 Features
+
+### 🔐 Authentication
+- [x] Login & Register
+- [x] Secure JWT Authentication (with Refresh Token)
+- [x] Persistent Login Session
+- [x] Logout
+
+### 📝 Notes Management
+- [x] Fetch Notes
+- [x] Create Notes
+- [x] Delete Notes
+- [ ] Edit Notes _(coming soon)_
 
 1. **mobile_oddbit**: A mobile application built with Flutter using Clean Architecture.
 2. **be_oddbit**: An Express.js backend RESTful API.
@@ -27,7 +48,7 @@ The backend is a Node.js REST API built with Express.js and backed by PostgreSQL
 ### Technical Specifications
 - **Framework**: Express.js
 - **Database**: PostgreSQL (connected via `pg` pool)
-- **Authentication**: Bearer Token (JWT). Implementing access token (15 mins lifespan) and refresh token rotation strategy (7 days lifespan, stored in DB).
+- **Authentication**: Bearer Token (JWT). Implementing access token (60 mins lifespan) and refresh token rotation strategy (30 days lifespan, stored in DB).
 - **API Documentation**: Integrated with Swagger UI. When the server is running locally, access it via `http://localhost:<PORT>/api-docs`.
 
 ### API Routes
