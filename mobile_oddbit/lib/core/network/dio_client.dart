@@ -38,6 +38,10 @@ class DioClient {
     };
   }
 
+  void setAuthToken(String token) {
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
   // Get
   Future<Response> get(
     String url, {

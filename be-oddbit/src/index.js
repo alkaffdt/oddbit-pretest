@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const authRoutes = require('./routes/auth');
 const notesRoutes = require('./routes/notes');
+const pool = require('./db');
 
 const app = express();
 
@@ -25,7 +26,21 @@ app.use((err, req, res, next) => {
     next(err);
 });
 
+async function runMigrations() {
+    try {
+        await pool.query(`
+            ALTER TABLE users ADD COLUMN IF NOT EXISTS refresh_token TEXT;
+        `);
+        console.log('Migrations applied successfully.');
+    } catch (err) {
+        console.error('Migration error:', err.message);
+    }
+}
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT}`);
+
+runMigrations().then(() => {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
 });

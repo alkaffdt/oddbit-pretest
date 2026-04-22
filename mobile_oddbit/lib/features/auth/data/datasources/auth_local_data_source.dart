@@ -1,21 +1,23 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oddbit_mobile/features/auth/domain/models/user.dart';
 
 import '../../../../core/storage/secure_storage.dart';
-import '../models/user_model.dart';
 import '../../../../core/error/failures.dart';
 
 final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  return AuthLocalDataSourceImpl(secureStorage: ref.watch(secureStorageProvider));
+  return AuthLocalDataSourceImpl(
+    secureStorage: ref.watch(secureStorageProvider),
+  );
 });
 
 abstract class AuthLocalDataSource {
-  Future<void> cacheUser(UserModel userToCache);
-  Future<UserModel?> getLastUser();
+  Future<void> cacheUser(User userToCache);
+  Future<User?> getLastUser();
   Future<void> clearUser();
 }
 
-const cachedUserKey = 'CACHED_USER';
+const refreshTokenKey = 'REFRESH_TOKEN';
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   final SecureStorage secureStorage;
@@ -23,19 +25,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl({required this.secureStorage});
 
   @override
-  Future<void> cacheUser(UserModel userToCache) async {
-    await secureStorage.writeData(
-      cachedUserKey,
-      json.encode(userToCache.toJson()),
-    );
+  Future<void> cacheUser(User userToCache) async {
+    await secureStorage.writeData(refreshTokenKey, userToCache.accessToken);
   }
 
   @override
-  Future<UserModel?> getLastUser() async {
+  Future<User?> getLastUser() async {
     try {
-      final jsonString = await secureStorage.readData(cachedUserKey);
+      final jsonString = await secureStorage.readData(refreshTokenKey);
       if (jsonString != null) {
-        return UserModel.fromJson(json.decode(jsonString));
+        return User.fromJson(json.decode(jsonString));
       } else {
         return null;
       }
@@ -46,6 +45,6 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> clearUser() async {
-    await secureStorage.deleteData(cachedUserKey);
+    await secureStorage.deleteData(refreshTokenKey);
   }
 }

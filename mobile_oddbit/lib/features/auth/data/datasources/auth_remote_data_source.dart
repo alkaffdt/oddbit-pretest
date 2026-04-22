@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oddbit_mobile/features/auth/domain/models/user.dart';
 
 import '../../../../core/network/dio_client.dart';
-import '../models/user_model.dart';
 import '../../../../core/error/failures.dart';
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
@@ -10,7 +10,7 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
 });
 
 abstract class AuthRemoteDataSource {
-  Future<UserModel> login(String username, String password);
+  Future<User> login(String username, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -19,7 +19,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.dioClient});
 
   @override
-  Future<UserModel> login(String username, String password) async {
+  Future<User> login(String username, String password) async {
     try {
       final response = await dioClient.post(
         '/auth/login',
@@ -27,7 +27,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        return UserModel.fromJson(response.data);
+        return User.fromJson(response.data);
       } else {
         throw const ServerFailure('Invalid credentials');
       }

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entities/user.dart';
+import '../../domain/models/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
@@ -23,9 +23,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<User> login(String email, String password) async {
-    final userModel = await remoteDataSource.login(email, password);
-    await localDataSource.cacheUser(userModel);
-    return userModel;
+    final response = await remoteDataSource.login(email, password);
+    await localDataSource.cacheUser(response);
+    return response;
   }
 
   @override
