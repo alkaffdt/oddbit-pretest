@@ -33,11 +33,18 @@ password : rahasia
 1. **mobile_oddbit**: A mobile application built with Flutter using Clean Architecture.
 2. **be_oddbit**: An Express.js backend RESTful API.
 ### [📝 Swagger Link](https://oddbit-pretest.up.railway.app/api-docs)
-### [🟢 Server Status : Online](https://oddbit-pretest.up.railway.app/api-docs)
+### [⚙️ Server Status : 🟢 Online](https://oddbit-pretest.up.railway.app/api-docs)
 
 ---
 
 ## 1. Mobile App
+### [Video Preview](https://drive.google.com/file/d/126XrUwVqrgtZhQUVOsFbCvzkZuMvizQe/view?usp=sharing)
+
+
+## Platforms
+### Android : 🟢
+### iOS     : 🟢
+### Web     : ❗️ 
 
 The mobile counterpart is developed using the Flutter framework targeting multi-platform support. It aims to interact with the Express API to handle user authentication and notes.
 
@@ -76,3 +83,9 @@ The backend is a Node.js REST API built with Express.js and backed by PostgreSQL
 
 ---
 
+## Suggestions / Potential Improvements
+
+### Auto-Build & Auto-Deploy to Web using CI/CD
+### Pagination & Caching
+### Offline Mode
+### Animation Implementation
