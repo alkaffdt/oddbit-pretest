@@ -4,6 +4,7 @@ import 'package:oddbit_mobile/extensions/int_extensions.dart';
 import 'package:oddbit_mobile/extensions/navigation_extension.dart';
 import 'package:oddbit_mobile/features/auth/presentation/providers/auth_controller_provider.dart';
 import 'package:oddbit_mobile/features/auth/presentation/screens/login_page.dart';
+import 'package:oddbit_mobile/features/notes/domain/entities/note_model.dart';
 import 'package:oddbit_mobile/features/notes/presentation/providers/note_provider.dart';
 import 'package:oddbit_mobile/features/notes/presentation/widgets/note_card_widget.dart';
 
@@ -25,7 +26,12 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
     super.dispose();
   }
 
-  void _showAddNoteDialog() {
+  void _showAddNoteDialog({Note? note}) {
+    if (note != null) {
+      _titleController.text = note.title;
+      _contentController.text = note.content;
+    }
+
     showDialog(
       context: context,
       builder: (ctx) {
@@ -55,12 +61,28 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
               onPressed: () {
                 if (_titleController.text.isNotEmpty &&
                     _contentController.text.isNotEmpty) {
-                  ref
-                      .read(notesControllerProvider.notifier)
-                      .addNote(_titleController.text, _contentController.text);
+                  if (note != null) {
+                    ref
+                        .read(notesControllerProvider.notifier)
+                        .editNote(
+                          note.id,
+                          _titleController.text,
+                          _contentController.text,
+                        );
+                  } else {
+                    ref
+                        .read(notesControllerProvider.notifier)
+                        .addNote(
+                          _titleController.text,
+                          _contentController.text,
+                        );
+                  }
+
                   _titleController.clear();
                   _contentController.clear();
-                  Navigator.pop(ctx);
+
+                  // close dialog
+                  context.pop();
                 }
               },
               child: const Text('Save'),
@@ -115,6 +137,9 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
                       ref
                           .read(notesControllerProvider.notifier)
                           .deleteNote(noteId);
+                    },
+                    onEdit: (note) {
+                      _showAddNoteDialog(note: note);
                     },
                   );
                 },

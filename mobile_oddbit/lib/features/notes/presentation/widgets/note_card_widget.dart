@@ -3,15 +3,22 @@ import 'package:oddbit_mobile/extensions/text_style_extension.dart';
 import 'package:oddbit_mobile/features/notes/domain/entities/note_model.dart';
 
 class NoteCardWidget extends StatelessWidget {
-  const NoteCardWidget({super.key, required this.note, required this.onDelete});
+  const NoteCardWidget({
+    super.key,
+    required this.note,
+    required this.onDelete,
+    this.onEdit,
+  });
 
   final Note note;
   final void Function(int) onDelete;
+  final void Function(Note)? onEdit;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: onEdit != null ? () => onEdit!(note) : null,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 10,

@@ -12,6 +12,7 @@ final noteRemoteDataSourceProvider = Provider<NoteRemoteDataSource>((ref) {
 abstract class NoteRemoteDataSource {
   Future<List<Note>> fetchNotes();
   Future<Note> createNote(String title, String content);
+  Future<Note> editNote(int id, String title, String content);
   Future<void> deleteNote(int id);
 }
 
@@ -48,6 +49,24 @@ class NoteRemoteDataSourceImpl implements NoteRemoteDataSource {
         return Note.fromJson(response.data);
       } else {
         throw const ServerFailure('Failed to create note');
+      }
+    } on DioException catch (e) {
+      throw ServerFailure(e.message ?? 'Server error occurred');
+    }
+  }
+
+  @override
+  Future<Note> editNote(int id, String title, String content) async {
+    try {
+      final response = await dioClient.put(
+        '/notes/$id',
+        data: {'title': title, 'content': content},
+      );
+
+      if (response.statusCode == 200) {
+        return Note.fromJson(response.data);
+      } else {
+        throw const ServerFailure('Failed to edit note');
       }
     } on DioException catch (e) {
       throw ServerFailure(e.message ?? 'Server error occurred');

@@ -26,6 +26,11 @@ class NoteRepositoryImpl implements NoteRepository {
   }
 
   @override
+  Future<Note> editNote(int id, String title, String content) async {
+    return await remoteDataSource.editNote(id, title, content);
+  }
+
+  @override
   Future<void> deleteNote(int id) async {
     await remoteDataSource.deleteNote(id);
   }
