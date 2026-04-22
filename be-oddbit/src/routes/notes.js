@@ -4,10 +4,41 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Apply middleware to all routes in this router
 router.use(authMiddleware);
 
-// GET /api/notes - Ambil semua notes milik user yang login
+/**
+ * @swagger
+ * tags:
+ *   name: Notes
+ *   description: Notes CRUD — all endpoints require a valid Bearer access_token
+ */
+
+/**
+ * @swagger
+ * /notes:
+ *   get:
+ *     summary: Get all notes for the authenticated user
+ *     tags: [Notes]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of notes (ordered by newest first)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Note'
+ *       401:
+ *         description: Missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/', async (req, res) => {
     try {
         const userId = req.user.id;
@@ -22,7 +53,42 @@ router.get('/', async (req, res) => {
     }
 });
 
-// POST /api/notes - Create a new note (title + content)
+/**
+ * @swagger
+ * /notes:
+ *   post:
+ *     summary: Create a new note
+ *     tags: [Notes]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NoteInput'
+ *     responses:
+ *       201:
+ *         description: Note created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Note'
+ *       400:
+ *         description: Title is required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/', async (req, res) => {
     try {
         const userId = req.user.id;
@@ -44,7 +110,55 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /api/notes/{id} - Update a note
+/**
+ * @swagger
+ * /notes/{id}:
+ *   put:
+ *     summary: Update a note
+ *     tags: [Notes]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Note ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NoteInput'
+ *     responses:
+ *       200:
+ *         description: Updated note
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Note'
+ *       400:
+ *         description: Title is required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Note not found or belongs to another user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ */
 router.put('/:id', async (req, res) => {
     try {
         const userId = req.user.id;
@@ -55,7 +169,6 @@ router.put('/:id', async (req, res) => {
             return res.status(400).json({ error: 'Title is required' });
         }
 
-        // Ensure the note exists and belongs to the user
         const result = await pool.query(
             'UPDATE notes SET title = $1, content = $2 WHERE id = $3 AND user_id = $4 RETURNING *',
             [title, content, noteId, userId]
@@ -72,13 +185,54 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /api/notes/{id} - Delete a note
+/**
+ * @swagger
+ * /notes/{id}:
+ *   delete:
+ *     summary: Delete a note
+ *     tags: [Notes]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Note ID
+ *     responses:
+ *       200:
+ *         description: Note deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Note deleted successfully
+ *                 note:
+ *                   $ref: '#/components/schemas/Note'
+ *       401:
+ *         description: Missing or invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Note not found or belongs to another user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error
+ */
 router.delete('/:id', async (req, res) => {
     try {
         const userId = req.user.id;
         const noteId = req.params.id;
 
-        // Ensure the note exists and belongs to the user
         const result = await pool.query(
             'DELETE FROM notes WHERE id = $1 AND user_id = $2 RETURNING *',
             [noteId, userId]
