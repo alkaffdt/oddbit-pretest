@@ -6,6 +6,7 @@ import 'package:oddbit_mobile/extensions/navigation_extension.dart';
 import 'package:oddbit_mobile/extensions/text_style_extension.dart';
 import 'package:oddbit_mobile/features/auth/domain/models/auth_state.dart';
 import 'package:oddbit_mobile/features/auth/presentation/providers/auth_controller_provider.dart';
+import 'package:oddbit_mobile/features/notes/presentation/providers/note_provider.dart';
 import 'package:oddbit_mobile/features/notes/presentation/screens/notes_page.dart';
 import 'package:oddbit_mobile/theme/app_colors.dart';
 
@@ -37,6 +38,8 @@ class _LoginScreenState extends ConsumerState<LoginPage> {
       if (next.authStatus == AuthStatus.authenticated) {
         // close loading dialog
         context.pop();
+
+        ref.invalidate(notesControllerProvider);
 
         // Navigate to notes page
         context.pushReplacement(NotesPage());
