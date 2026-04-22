@@ -39,7 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginPage> {
         context.pop();
 
         // Navigate to notes page
-        context.push(NotesPage());
+        context.pushReplacement(NotesPage());
         return;
       }
 

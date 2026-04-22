@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oddbit_mobile/extensions/int_extensions.dart';
+import 'package:oddbit_mobile/extensions/navigation_extension.dart';
+import 'package:oddbit_mobile/features/auth/presentation/providers/auth_controller_provider.dart';
+import 'package:oddbit_mobile/features/auth/presentation/screens/login_page.dart';
 import 'package:oddbit_mobile/features/notes/presentation/providers/note_provider.dart';
 import 'package:oddbit_mobile/features/notes/presentation/widgets/note_card_widget.dart';
 
@@ -35,6 +39,8 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
                 decoration: const InputDecoration(labelText: 'Title'),
               ),
               TextField(
+                minLines: 1,
+                maxLines: 10,
                 controller: _contentController,
                 decoration: const InputDecoration(labelText: 'Content'),
               ),
@@ -74,9 +80,16 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
         title: const Text('My Notes'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () =>
-                ref.read(notesControllerProvider.notifier).loadNotes(),
+            icon: const Icon(Icons.logout, color: Colors.red),
+            onPressed: () => ref
+                .read(authControllerProvider.notifier)
+                .logout()
+                .whenComplete(() {
+                  ref.invalidate(notesControllerProvider);
+                  if (context.mounted) {
+                    context.pushReplacement(LoginPage());
+                  }
+                }),
           ),
         ],
       ),
@@ -90,7 +103,8 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
             return RefreshIndicator(
               onRefresh: () =>
                   ref.read(notesControllerProvider.notifier).loadNotes(),
-              child: ListView.builder(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => 8.toHeightGap(),
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
                   final note = notes[index];

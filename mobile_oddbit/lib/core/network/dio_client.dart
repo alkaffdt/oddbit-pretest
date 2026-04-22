@@ -43,6 +43,10 @@ class DioClient {
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
 
+  void clearAuthToken() {
+    _dio.options.headers.remove('Authorization');
+  }
+
   // Get
   Future<Response> get(
     String url, {

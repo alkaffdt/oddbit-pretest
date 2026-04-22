@@ -90,7 +90,8 @@ class AuthController extends StateNotifier<LoginPageState> {
   }
 
   Future<void> logout() async {
-    state = state.copyWith(user: null);
+    state = state.copyWith(user: null, authStatus: AuthStatus.init);
+    dioClient.clearAuthToken();
     _authRepository.logout();
   }
 }
