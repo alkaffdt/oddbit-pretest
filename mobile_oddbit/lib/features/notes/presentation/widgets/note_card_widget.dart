@@ -16,11 +16,17 @@ class NoteCardWidget extends StatelessWidget {
           horizontal: 16,
           vertical: 10,
         ),
+
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(child: Text(note.title).fontSize(18).bold()),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(note.title).fontSize(18).bold(),
+              ),
+            ),
             InkWell(
               onTap: () => onDelete(note.id),
               child: Icon(Icons.close, color: Colors.red),
