@@ -15,7 +15,7 @@ class AppDialog {
   }) {
     showDialog(
       context: localContext,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) {
         _dialogContext = context;
         return AlertDialog(

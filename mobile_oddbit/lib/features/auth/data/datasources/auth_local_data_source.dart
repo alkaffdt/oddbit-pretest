@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:oddbit_mobile/features/auth/domain/models/user.dart';
+import 'package:oddbit_mobile/features/auth/domain/models/user_model.dart';
 
 import '../../../../core/storage/secure_storage.dart';
 import '../../../../core/error/failures.dart';
@@ -12,8 +12,8 @@ final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
 });
 
 abstract class AuthLocalDataSource {
-  Future<void> cacheUser(User userToCache);
-  Future<User?> getLastUser();
+  Future<void> saveRefreshToken(String refreshToken);
+  Future<String?> getRefreshToken();
   Future<void> clearUser();
 }
 
@@ -25,16 +25,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl({required this.secureStorage});
 
   @override
-  Future<void> cacheUser(User userToCache) async {
-    await secureStorage.writeData(refreshTokenKey, userToCache.accessToken);
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await secureStorage.writeData(refreshTokenKey, refreshToken);
   }
 
   @override
-  Future<User?> getLastUser() async {
+  Future<String?> getRefreshToken() async {
     try {
       final jsonString = await secureStorage.readData(refreshTokenKey);
       if (jsonString != null) {
-        return User.fromJson(json.decode(jsonString));
+        return jsonString;
       } else {
         return null;
       }

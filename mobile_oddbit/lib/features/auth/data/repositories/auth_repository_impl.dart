@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oddbit_mobile/features/auth/domain/models/token_model.dart';
 
-import '../../domain/models/user.dart';
+import '../../domain/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
@@ -24,14 +25,21 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<User> login(String email, String password) async {
     final response = await remoteDataSource.login(email, password);
-    await localDataSource.cacheUser(response);
+    await localDataSource.saveRefreshToken(response.refreshToken);
     return response;
   }
 
   @override
   Future<User> register(String email, String password) async {
     final response = await remoteDataSource.register(email, password);
-    await localDataSource.cacheUser(response);
+    await localDataSource.saveRefreshToken(response.refreshToken);
+    return response;
+  }
+
+  @override
+  Future<Token> refreshToken(String refreshToken) async {
+    final response = await remoteDataSource.refreshToken(refreshToken);
+    await localDataSource.saveRefreshToken(response.refreshToken);
     return response;
   }
 
@@ -41,7 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User?> getCachedUser() async {
-    return await localDataSource.getLastUser();
+  Future<String?> getRefreshToken() async {
+    return await localDataSource.getRefreshToken();
   }
 }

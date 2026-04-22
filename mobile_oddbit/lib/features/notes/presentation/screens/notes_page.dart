@@ -87,20 +87,24 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
             if (notes.isEmpty) {
               return const Center(child: Text('No notes found.'));
             }
-            return ListView.builder(
-              itemCount: notes.length,
-              itemBuilder: (context, index) {
-                final note = notes[index];
+            return RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(notesControllerProvider.notifier).loadNotes(),
+              child: ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[index];
 
-                return NoteCardWidget(
-                  note: note,
-                  onDelete: (noteId) {
-                    ref
-                        .read(notesControllerProvider.notifier)
-                        .deleteNote(noteId);
-                  },
-                );
-              },
+                  return NoteCardWidget(
+                    note: note,
+                    onDelete: (noteId) {
+                      ref
+                          .read(notesControllerProvider.notifier)
+                          .deleteNote(noteId);
+                    },
+                  );
+                },
+              ),
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),

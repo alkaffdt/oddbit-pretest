@@ -43,8 +43,14 @@ class _LoginScreenState extends ConsumerState<LoginPage> {
         return;
       }
 
+      // if (next.authStatus == AuthStatus.init) {
+      //   context.pop();
+      //   return;
+      // }
+
       if (next.user?.isLoading == true) {
         AppDialog.showLoadingDialog(context);
+        return;
       } else if (next.user?.hasError ?? false) {
         // dismiss loading dialog
         context.pop();

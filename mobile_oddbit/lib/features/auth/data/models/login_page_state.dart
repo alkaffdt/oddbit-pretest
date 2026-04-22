@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oddbit_mobile/features/auth/domain/models/auth_state.dart';
 import 'package:oddbit_mobile/features/auth/domain/models/submission_status_state.dart';
-import 'package:oddbit_mobile/features/auth/domain/models/user.dart';
+import 'package:oddbit_mobile/features/auth/domain/models/user_model.dart';
 
 class LoginPageState {
   final AsyncValue<User>? user;

@@ -6,7 +6,7 @@ const options = {
         info: {
             title: 'Oddbit Notes API',
             version: '1.0.0',
-            description: 'REST API for user authentication and notes management. Access tokens expire in 15 minutes — use the /auth/refresh endpoint to obtain a new pair.',
+            description: 'REST API for user authentication and notes management. Access tokens expire in 1 hour — use the /auth/refresh endpoint to obtain a new pair.',
         },
         servers: [
             {
@@ -36,7 +36,7 @@ const options = {
                     type: 'object',
                     properties: {
                         message: { type: 'string', example: 'Login successful' },
-                        access_token: { type: 'string', description: 'JWT access token (expires in 15 min)' },
+                        access_token: { type: 'string', description: 'JWT access token (expires in 1 hour)' },
                         refresh_token: { type: 'string', description: 'JWT refresh token (expires in 7 days)' },
                         username: { type: 'string', example: 'johndoe' },
                     },
