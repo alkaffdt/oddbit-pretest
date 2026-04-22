@@ -25,6 +25,7 @@ This repository contains the source code for the Oddbit Pretest application, whi
 
 1. **mobile_oddbit**: A mobile application built with Flutter using Clean Architecture.
 2. **be_oddbit**: An Express.js backend RESTful API.
+- ### [Swagger Link](https://oddbit-pretest.up.railway.app/api-docs)
 
 ---
 
