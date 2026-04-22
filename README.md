@@ -25,7 +25,7 @@ This repository contains the source code for the Oddbit Pretest application, whi
 
 1. **mobile_oddbit**: A mobile application built with Flutter using Clean Architecture.
 2. **be_oddbit**: An Express.js backend RESTful API.
-- ### [Swagger Link](https://oddbit-pretest.up.railway.app/api-docs)
+- ### [📝 Swagger Link](https://oddbit-pretest.up.railway.app/api-docs)
 
 ---
 
@@ -50,7 +50,7 @@ The backend is a Node.js REST API built with Express.js and backed by PostgreSQL
 - **Framework**: Express.js
 - **Database**: PostgreSQL (connected via `pg` pool)
 - **Authentication**: Bearer Token (JWT). Implementing access token (60 mins lifespan) and refresh token rotation strategy (30 days lifespan, stored in DB).
-- **API Documentation**: Integrated with Swagger UI. When the server is running locally, access it via `http://localhost:<PORT>/api-docs`.
+- **API Documentation**: Integrated with [📝 Swagger UI](https://oddbit-pretest.up.railway.app/api-docs). When the server is running locally, access it via `http://localhost:<PORT>/api-docs`.
 
 ### API Routes
 
