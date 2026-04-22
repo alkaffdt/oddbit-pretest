@@ -2,12 +2,25 @@
 
 This repository contains the source code for the Oddbit Pretest application, which is divided into two primary sub-projects:
 
-1. **be-oddbit**: An Express.js backend RESTful API.
-2. **mobile_oddbit**: A mobile application built with Flutter using Clean Architecture.
+1. **mobile_oddbit**: A mobile application built with Flutter using Clean Architecture.
+2. **be_oddbit**: An Express.js backend RESTful API.
 
 ---
 
-## 1. Backend Service (`be-oddbit`)
+## 1. Mobile App (`mobile_oddbit`)
+
+The mobile counterpart is developed using the Flutter framework targeting multi-platform support. It aims to interact with the Express API to handle user authentication and notes.
+
+### Technical Specifications
+- **SDK**: Flutter (>= 3.11.0)
+- **Architecture**: **Clean Architecture**. The codebase strictly enforces separation of concerns into distinct layers (e.g., Domain, Data, Presentation) and intentionally avoids relying on code-generation packages like Freezed for models.
+- **State Management**: **Riverpod** (`flutter_riverpod ^2.5.1`). Used for robust, predictable, and scalable state management and dependency injection across the application.
+- **Networking**: **Dio** (`dio ^5.4.3`). A powerful HTTP client used for handling API requests, token injection (via interceptors), and error handling.
+- **Local Persistence**: **Flutter Secure Storage** (`flutter_secure_storage ^9.2.2`). Leveraged to securely persist sensitive data locally onto the device, such as the JWT access and refresh tokens.
+
+---
+
+## 2. Backend Service (`be-oddbit`)
 
 The backend is a Node.js REST API built with Express.js and backed by PostgreSQL. It primarily serves as a Notes management system with secure authentication. 
 
@@ -33,14 +46,3 @@ The backend is a Node.js REST API built with Express.js and backed by PostgreSQL
 
 ---
 
-## 2. Mobile App (`mobile_oddbit`)
-
-The mobile counterpart is developed using the Flutter framework targeting multi-platform support. It aims to interact with the Express API to handle user authentication and notes.
-
-### Technical Specifications
-- **SDK**: Flutter (>= 3.11.0)
-- **Architecture**: **Clean Architecture**. The codebase strictly enforces separation of concerns into distinct layers (e.g., Domain, Data, Presentation) and intentionally avoids relying on code-generation packages like Freezed for models.
-- **State Management**: **Riverpod** (`flutter_riverpod ^2.5.1`). Used for robust, predictable, and scalable state management and dependency injection across the application.
-- **Networking**: **Dio** (`dio ^5.4.3`). A powerful HTTP client used for handling API requests, token injection (via interceptors), and error handling.
-- **Local Persistence**: **Flutter Secure Storage** (`flutter_secure_storage ^9.2.2`). Leveraged to securely persist sensitive data locally onto the device, such as the JWT access and refresh tokens.
-- **Object Equality**: **Equatable** (`equatable ^2.0.5`). Utilized within the Data and Domain layers to simplify object comparisons without relying on boilerplate methods.
