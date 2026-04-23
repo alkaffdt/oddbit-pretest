@@ -10,15 +10,10 @@ import 'package:oddbit_mobile/features/notes/presentation/providers/note_provide
 import 'package:oddbit_mobile/features/notes/presentation/widgets/add_new_note_form.dart';
 import 'package:oddbit_mobile/features/notes/presentation/widgets/note_card_widget.dart';
 
-class NotesPage extends ConsumerStatefulWidget {
+class NotesPage extends ConsumerWidget {
   const NotesPage({super.key});
 
-  @override
-  ConsumerState<NotesPage> createState() => _NotesScreenState();
-}
-
-class _NotesScreenState extends ConsumerState<NotesPage> {
-  void _showAddNoteDialog({Note? note}) {
+  void _showAddNoteDialog(BuildContext context, {Note? note}) {
     showDialog(
       context: context,
       builder: (ctx) {
@@ -31,7 +26,7 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final notesState = ref.watch(notesControllerProvider);
 
     return Scaffold(
@@ -77,7 +72,7 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
                           .deleteNote(noteId);
                     },
                     onEdit: (note) {
-                      _showAddNoteDialog(note: note);
+                      _showAddNoteDialog(context, note: note);
                     },
                   );
                 },
@@ -99,7 +94,9 @@ class _NotesScreenState extends ConsumerState<NotesPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showAddNoteDialog,
+        onPressed: () {
+          _showAddNoteDialog(context);
+        },
         child: const Icon(Icons.add),
       ),
     );
